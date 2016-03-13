@@ -11,7 +11,7 @@ using MVC5Homework.Models;
 namespace MVC5Homework.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
