@@ -42,8 +42,9 @@ namespace MVC5Homework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            if (客戶資料 == null)
+            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            if (客戶資料 == null | 客戶資料.是否已刪除)
             {
                 return HttpNotFound();
             }
@@ -65,8 +66,10 @@ namespace MVC5Homework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                repo客戶資料.Add(客戶資料);
+                repo客戶資料.UnitOfWork.Commit();
+                //db.客戶資料.Add(客戶資料);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -80,8 +83,9 @@ namespace MVC5Homework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            if (客戶資料 == null)
+            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            if (客戶資料 == null | 客戶資料.是否已刪除)
             {
                 return HttpNotFound();
             }
@@ -112,7 +116,7 @@ namespace MVC5Homework.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             客戶資料 客戶資料 = db.客戶資料.Find(id);
-            if (客戶資料 == null)
+            if (客戶資料 == null | 客戶資料.是否已刪除)
             {
                 return HttpNotFound();
             }
@@ -124,10 +128,12 @@ namespace MVC5Homework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
             客戶資料.是否已刪除 = true;
+            repo客戶資料.UnitOfWork.Commit();
             //db.客戶資料.Remove(客戶資料);
-            db.SaveChanges();
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 

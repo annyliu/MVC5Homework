@@ -17,7 +17,9 @@ namespace MVC5Homework.Controllers
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            //有問題：會顯示出所有資料，包含已刪除的客戶
+            var 客戶聯絡人 = repo客戶聯絡人.All().ToList();
             return View(客戶聯絡人.ToList());
         }
 
@@ -28,7 +30,8 @@ namespace MVC5Homework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
+            // 客戶聯絡人 = db.客戶聯絡人.Find(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -52,8 +55,10 @@ namespace MVC5Homework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                repo客戶聯絡人.Add(客戶聯絡人);
+                repo客戶聯絡人.UnitOfWork.Commit();
+                //db.客戶聯絡人.Add(客戶聯絡人);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +73,8 @@ namespace MVC5Homework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -100,7 +106,7 @@ namespace MVC5Homework.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }            
             客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
             if (客戶聯絡人 == null)
             {
@@ -114,9 +120,12 @@ namespace MVC5Homework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            db.客戶聯絡人.Remove(客戶聯絡人);
-            db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id);
+            repo客戶聯絡人.Delete(客戶聯絡人);
+            repo客戶聯絡人.UnitOfWork.Commit();
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            //db.客戶聯絡人.Remove(客戶聯絡人);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
